@@ -9,8 +9,44 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WebSeriesRouteImport } from './routes/web-series'
+import { Route as TrendingRouteImport } from './routes/trending'
+import { Route as MoviesRouteImport } from './routes/movies'
+import { Route as KDramaRouteImport } from './routes/k-drama'
+import { Route as GenresRouteImport } from './routes/genres'
+import { Route as AnimeRouteImport } from './routes/anime'
 import { Route as IndexRouteImport } from './routes/index'
 
+const WebSeriesRoute = WebSeriesRouteImport.update({
+  id: '/web-series',
+  path: '/web-series',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrendingRoute = TrendingRouteImport.update({
+  id: '/trending',
+  path: '/trending',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MoviesRoute = MoviesRouteImport.update({
+  id: '/movies',
+  path: '/movies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KDramaRoute = KDramaRouteImport.update({
+  id: '/k-drama',
+  path: '/k-drama',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GenresRoute = GenresRouteImport.update({
+  id: '/genres',
+  path: '/genres',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnimeRoute = AnimeRouteImport.update({
+  id: '/anime',
+  path: '/anime',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +55,116 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/anime': typeof AnimeRoute
+  '/genres': typeof GenresRoute
+  '/k-drama': typeof KDramaRoute
+  '/movies': typeof MoviesRoute
+  '/trending': typeof TrendingRoute
+  '/web-series': typeof WebSeriesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/anime': typeof AnimeRoute
+  '/genres': typeof GenresRoute
+  '/k-drama': typeof KDramaRoute
+  '/movies': typeof MoviesRoute
+  '/trending': typeof TrendingRoute
+  '/web-series': typeof WebSeriesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/anime': typeof AnimeRoute
+  '/genres': typeof GenresRoute
+  '/k-drama': typeof KDramaRoute
+  '/movies': typeof MoviesRoute
+  '/trending': typeof TrendingRoute
+  '/web-series': typeof WebSeriesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/anime'
+    | '/genres'
+    | '/k-drama'
+    | '/movies'
+    | '/trending'
+    | '/web-series'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/anime'
+    | '/genres'
+    | '/k-drama'
+    | '/movies'
+    | '/trending'
+    | '/web-series'
+  id:
+    | '__root__'
+    | '/'
+    | '/anime'
+    | '/genres'
+    | '/k-drama'
+    | '/movies'
+    | '/trending'
+    | '/web-series'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AnimeRoute: typeof AnimeRoute
+  GenresRoute: typeof GenresRoute
+  KDramaRoute: typeof KDramaRoute
+  MoviesRoute: typeof MoviesRoute
+  TrendingRoute: typeof TrendingRoute
+  WebSeriesRoute: typeof WebSeriesRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/web-series': {
+      id: '/web-series'
+      path: '/web-series'
+      fullPath: '/web-series'
+      preLoaderRoute: typeof WebSeriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/trending': {
+      id: '/trending'
+      path: '/trending'
+      fullPath: '/trending'
+      preLoaderRoute: typeof TrendingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/movies': {
+      id: '/movies'
+      path: '/movies'
+      fullPath: '/movies'
+      preLoaderRoute: typeof MoviesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/k-drama': {
+      id: '/k-drama'
+      path: '/k-drama'
+      fullPath: '/k-drama'
+      preLoaderRoute: typeof KDramaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/genres': {
+      id: '/genres'
+      path: '/genres'
+      fullPath: '/genres'
+      preLoaderRoute: typeof GenresRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/anime': {
+      id: '/anime'
+      path: '/anime'
+      fullPath: '/anime'
+      preLoaderRoute: typeof AnimeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,6 +177,12 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AnimeRoute: AnimeRoute,
+  GenresRoute: GenresRoute,
+  KDramaRoute: KDramaRoute,
+  MoviesRoute: MoviesRoute,
+  TrendingRoute: TrendingRoute,
+  WebSeriesRoute: WebSeriesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
