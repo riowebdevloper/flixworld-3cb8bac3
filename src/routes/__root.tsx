@@ -71,8 +71,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:site_name", content: "FlixWorld.fun" },
       { property: "og:type", content: "website" },
       { property: "og:title", content: "FlixWorld.fun — Stream Movies, Web Series, Anime & K-Drama" },
-      { property: "og:description", content: "Stream the universe of cinema. Movies, web series, anime & K-drama — all in one place." },
+      { property: "og:description", content: "FlixWorld.fun — your premium destination for the latest movies, trending web series, anime and K-drama in HD & 4K." },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "FlixWorld.fun — Stream Movies, Web Series, Anime & K-Drama" },
+      { name: "twitter:description", content: "FlixWorld.fun — your premium destination for the latest movies, trending web series, anime and K-drama in HD & 4K." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/e802454a-3af7-40b5-86f7-563fa85a13d5" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/e802454a-3af7-40b5-86f7-563fa85a13d5" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
