@@ -33,7 +33,7 @@ function SearchPage() {
   const [q, setQ] = useState(sp.q);
 
   const update = (patch: Partial<typeof sp>) =>
-    navigate({ search: (prev) => ({ ...prev, ...patch }) as typeof sp });
+    navigate({ search: (prev: typeof sp) => ({ ...prev, ...patch }) });
 
   const filtered = useMemo(() => {
     const query = q.trim().toLowerCase();

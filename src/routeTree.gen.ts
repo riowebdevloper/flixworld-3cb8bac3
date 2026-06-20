@@ -11,11 +11,14 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WebSeriesRouteImport } from './routes/web-series'
 import { Route as TrendingRouteImport } from './routes/trending'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SearchRouteImport } from './routes/search'
 import { Route as MoviesRouteImport } from './routes/movies'
 import { Route as KDramaRouteImport } from './routes/k-drama'
 import { Route as GenresRouteImport } from './routes/genres'
 import { Route as AnimeRouteImport } from './routes/anime'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as MovieIdRouteImport } from './routes/movie.$id'
 
 const WebSeriesRoute = WebSeriesRouteImport.update({
   id: '/web-series',
@@ -25,6 +28,16 @@ const WebSeriesRoute = WebSeriesRouteImport.update({
 const TrendingRoute = TrendingRouteImport.update({
   id: '/trending',
   path: '/trending',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MoviesRoute = MoviesRouteImport.update({
@@ -52,6 +65,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MovieIdRoute = MovieIdRouteImport.update({
+  id: '/movie/$id',
+  path: '/movie/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -59,8 +77,11 @@ export interface FileRoutesByFullPath {
   '/genres': typeof GenresRoute
   '/k-drama': typeof KDramaRoute
   '/movies': typeof MoviesRoute
+  '/search': typeof SearchRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/trending': typeof TrendingRoute
   '/web-series': typeof WebSeriesRoute
+  '/movie/$id': typeof MovieIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -68,8 +89,11 @@ export interface FileRoutesByTo {
   '/genres': typeof GenresRoute
   '/k-drama': typeof KDramaRoute
   '/movies': typeof MoviesRoute
+  '/search': typeof SearchRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/trending': typeof TrendingRoute
   '/web-series': typeof WebSeriesRoute
+  '/movie/$id': typeof MovieIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -78,8 +102,11 @@ export interface FileRoutesById {
   '/genres': typeof GenresRoute
   '/k-drama': typeof KDramaRoute
   '/movies': typeof MoviesRoute
+  '/search': typeof SearchRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/trending': typeof TrendingRoute
   '/web-series': typeof WebSeriesRoute
+  '/movie/$id': typeof MovieIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -89,8 +116,11 @@ export interface FileRouteTypes {
     | '/genres'
     | '/k-drama'
     | '/movies'
+    | '/search'
+    | '/sitemap.xml'
     | '/trending'
     | '/web-series'
+    | '/movie/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -98,8 +128,11 @@ export interface FileRouteTypes {
     | '/genres'
     | '/k-drama'
     | '/movies'
+    | '/search'
+    | '/sitemap.xml'
     | '/trending'
     | '/web-series'
+    | '/movie/$id'
   id:
     | '__root__'
     | '/'
@@ -107,8 +140,11 @@ export interface FileRouteTypes {
     | '/genres'
     | '/k-drama'
     | '/movies'
+    | '/search'
+    | '/sitemap.xml'
     | '/trending'
     | '/web-series'
+    | '/movie/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -117,8 +153,11 @@ export interface RootRouteChildren {
   GenresRoute: typeof GenresRoute
   KDramaRoute: typeof KDramaRoute
   MoviesRoute: typeof MoviesRoute
+  SearchRoute: typeof SearchRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TrendingRoute: typeof TrendingRoute
   WebSeriesRoute: typeof WebSeriesRoute
+  MovieIdRoute: typeof MovieIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -135,6 +174,20 @@ declare module '@tanstack/react-router' {
       path: '/trending'
       fullPath: '/trending'
       preLoaderRoute: typeof TrendingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/movies': {
@@ -172,6 +225,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/movie/$id': {
+      id: '/movie/$id'
+      path: '/movie/$id'
+      fullPath: '/movie/$id'
+      preLoaderRoute: typeof MovieIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -181,8 +241,11 @@ const rootRouteChildren: RootRouteChildren = {
   GenresRoute: GenresRoute,
   KDramaRoute: KDramaRoute,
   MoviesRoute: MoviesRoute,
+  SearchRoute: SearchRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TrendingRoute: TrendingRoute,
   WebSeriesRoute: WebSeriesRoute,
+  MovieIdRoute: MovieIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
