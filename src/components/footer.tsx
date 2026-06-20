@@ -28,7 +28,8 @@ export function Footer() {
           <ul className="space-y-1.5">
             <li><Link to="/trending" className="hover:text-white">Trending</Link></li>
             <li><Link to="/genres" className="hover:text-white">Genres</Link></li>
-            <li><Link to="/search" className="hover:text-white">Search</Link></li>
+            <li><Link to="/search" search={{ q: "", genre: "", year: "", rating: "", language: "" }} className="hover:text-white">Search</Link></li>
+            <li><Link to="/premium" className="hover:text-white">Premium</Link></li>
           </ul>
         </div>
         <div>
