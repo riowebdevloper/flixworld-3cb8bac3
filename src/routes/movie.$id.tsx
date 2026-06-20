@@ -1,10 +1,10 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { Play, Plus, Star, Share2, ChevronLeft } from "lucide-react";
-import { getById, movies } from "@/lib/data";
+import { getById, movies, type Movie } from "@/lib/data";
 import { Row } from "@/components/row";
 
 export const Route = createFileRoute("/movie/$id")({
-  loader: ({ params }) => {
+  loader: ({ params }): { movie: Movie } => {
     const m = getById(params.id);
     if (!m) throw notFound();
     return { movie: m };
