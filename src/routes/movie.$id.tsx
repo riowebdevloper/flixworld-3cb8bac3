@@ -49,7 +49,7 @@ export const Route = createFileRoute("/movie/$id")({
 });
 
 function MoviePage() {
-  const { movie: m } = Route.useLoaderData();
+  const { movie: m } = Route.useLoaderData() as { movie: Movie };
   const related = movies.filter((x) => x.id !== m.id && x.genres.some((g) => m.genres.includes(g))).slice(0, 12);
 
   return (
