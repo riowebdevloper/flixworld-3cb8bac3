@@ -16,6 +16,8 @@ const addSchema = z.object({
   rating: z.number().nullable().optional(),
 });
 
+const GENERIC_ERROR = "An error occurred. Please try again.";
+
 export const addToList = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => addSchema.parse(d))
@@ -26,7 +28,10 @@ export const addToList = createServerFn({ method: "POST" })
         { ...data, user_id: context.userId },
         { onConflict: "user_id,list_kind,media_type,media_id" },
       );
-    if (error) throw new Error(error.message);
+    if (error) {
+      console.error("[user-lists] addToList", error);
+      throw new Error(GENERIC_ERROR);
+    }
     return { ok: true };
   });
 
