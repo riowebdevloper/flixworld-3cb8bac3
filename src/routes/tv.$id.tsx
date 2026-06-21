@@ -1,4 +1,4 @@
-import { createFileRoute, notFound, Link } from "@tanstack/react-router";
+import { createFileRoute, notFound, Link, useRouter } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { Play, ChevronLeft, Star } from "lucide-react";
 import { fetchDetail } from "@/lib/tmdb.functions";
@@ -6,6 +6,7 @@ import { backdropUrl, posterUrl, profileUrl, year, officialTrailer } from "@/lib
 import { Row } from "@/components/row";
 import { MyListButtons } from "@/components/my-list-buttons";
 import { AdSlot } from "@/components/ad-slot";
+import { DetailPageSkeleton } from "@/components/skeletons";
 
 const detailQ = (id: number) =>
   queryOptions({
@@ -32,13 +33,17 @@ export const Route = createFileRoute("/tv/$id")({
     };
   },
   component: TvPage,
+  pendingComponent: DetailPageSkeleton,
   notFoundComponent: () => <div className="pt-24 text-center text-white/70">Title not found.</div>,
-  errorComponent: ({ reset }) => (
-    <div className="pt-24 text-center text-white/70">
-      <p>Could not load this title. Please try again.</p>
-      <button onClick={reset} className="mt-4 rounded bg-primary px-4 py-2 text-white">Retry</button>
-    </div>
-  ),
+  errorComponent: ({ reset }) => {
+    const router = useRouter();
+    return (
+      <div className="pt-24 text-center text-white/70">
+        <p>Could not load this title. Please try again.</p>
+        <button onClick={() => { router.invalidate(); reset(); }} className="mt-4 rounded bg-primary px-4 py-2 text-white">Retry</button>
+      </div>
+    );
+  },
 });
 
 function TvPage() {
