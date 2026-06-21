@@ -41,16 +41,22 @@ function AuthPage() {
           email, password,
           options: { emailRedirectTo: `${window.location.origin}/my-list` },
         });
-        if (error) throw error;
-        toast.success("Check your inbox to confirm your email.");
+        if (error) {
+          console.error("[auth] signUp", error);
+          toast.success("If this email is new, a confirmation link has been sent.");
+        } else {
+          toast.success("If this email is new, a confirmation link has been sent.");
+        }
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-        toast.success("Welcome back!");
-        navigate({ to: "/my-list" });
+        if (error) {
+          console.error("[auth] signIn", error);
+          toast.error("Invalid email or password.");
+        } else {
+          toast.success("Welcome back!");
+          navigate({ to: "/my-list" });
+        }
       }
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Something went wrong");
     } finally {
       setBusy(false);
     }

@@ -17,7 +17,8 @@ async function tmdb<T>(path: string, params: Record<string, string | number> = {
   const res = await fetch(url.toString(), { headers });
   if (!res.ok) {
     const body = await res.text().catch(() => "");
-    throw new Error(`TMDB ${path} → ${res.status}${body ? `: ${body.slice(0, 160)}` : ""}`);
+    console.error(`[tmdb] ${path} → ${res.status}${body ? `: ${body.slice(0, 160)}` : ""}`);
+    throw new Error("Could not fetch media data");
   }
   return (await res.json()) as T;
 }
