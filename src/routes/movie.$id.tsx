@@ -1,4 +1,4 @@
-import { createFileRoute, notFound, Link } from "@tanstack/react-router";
+import { createFileRoute, notFound, Link, useRouter } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { Play, ChevronLeft, Star } from "lucide-react";
 import { fetchDetail } from "@/lib/tmdb.functions";
@@ -6,6 +6,7 @@ import { backdropUrl, posterUrl, profileUrl, year, officialTrailer } from "@/lib
 import { Row } from "@/components/row";
 import { MyListButtons } from "@/components/my-list-buttons";
 import { AdSlot } from "@/components/ad-slot";
+import { DetailPageSkeleton } from "@/components/skeletons";
 
 const detailQ = (id: number) =>
   queryOptions({
@@ -32,13 +33,17 @@ export const Route = createFileRoute("/movie/$id")({
     };
   },
   component: MoviePage,
+  pendingComponent: DetailPageSkeleton,
   notFoundComponent: () => <div className="pt-24 text-center text-white/70">Title not found.</div>,
-  errorComponent: ({ reset }) => (
-    <div className="pt-24 text-center text-white/70">
-      <p>Could not load this title. Please try again.</p>
-      <button onClick={reset} className="mt-4 rounded bg-primary px-4 py-2 text-white">Retry</button>
-    </div>
-  ),
+  errorComponent: ({ reset }) => {
+    const router = useRouter();
+    return (
+      <div className="pt-24 text-center text-white/70">
+        <p>Could not load this title. Please try again.</p>
+        <button onClick={() => { router.invalidate(); reset(); }} className="mt-4 rounded bg-primary px-4 py-2 text-white">Retry</button>
+      </div>
+    );
+  },
 });
 
 function MoviePage() {
@@ -50,7 +55,7 @@ function MoviePage() {
   return (
     <div className="-mt-16">
       <div className="relative h-[60vh] min-h-[420px] sm:h-[75vh] w-full overflow-hidden">
-        <img src={backdropUrl(m.backdrop_path)} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <img src={backdropUrl(m.backdrop_path)} alt="" loading="eager" fetchpriority="high" decoding="async" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
         <Link to="/" className="absolute top-20 left-4 sm:left-6 lg:left-10 z-10 glass rounded-full p-2 hover:bg-white/10 transition">
@@ -61,7 +66,7 @@ function MoviePage() {
       <div className="relative -mt-48 sm:-mt-64 px-4 sm:px-6 lg:px-10 z-10">
         <div className="grid gap-8 sm:grid-cols-[200px_1fr] md:grid-cols-[260px_1fr] max-w-6xl mx-auto">
           <img src={posterUrl(m.poster_path)} alt={`${m.title} poster`}
-            className="rounded-2xl shadow-[var(--shadow-card)] w-full max-w-[200px] sm:max-w-none" />
+            loading="eager" decoding="async" className="rounded-2xl shadow-[var(--shadow-card)] w-full max-w-[200px] sm:max-w-none" />
           <div className="min-w-0">
             <h1 className="text-display text-4xl sm:text-6xl font-bold text-white drop-shadow-2xl">{m.title}</h1>
             {m.tagline && <p className="mt-2 text-white/60 italic">{m.tagline}</p>}
@@ -94,7 +99,7 @@ function MoviePage() {
             <div className="mt-4 grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
               {m.cast.map((c) => (
                 <div key={c.id} className="glass rounded-xl p-3 flex items-center gap-3">
-                  <img src={profileUrl(c.profile_path)} alt="" className="h-10 w-10 rounded-full object-cover shrink-0" />
+                  <img src={profileUrl(c.profile_path)} alt="" loading="lazy" decoding="async" className="h-10 w-10 rounded-full object-cover shrink-0" />
                   <div className="min-w-0">
                     <div className="text-sm text-white/90 truncate">{c.name}</div>
                     <div className="text-xs text-white/50 truncate">{c.character}</div>

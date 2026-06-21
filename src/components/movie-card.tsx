@@ -1,20 +1,15 @@
 import { Link } from "@tanstack/react-router";
-import { motion } from "framer-motion";
 import { Star, Play } from "lucide-react";
 import { posterUrl, year, detailPath, type Media } from "@/lib/tmdb";
 
 export function MovieCard({ media, index = 0 }: { media: Media; index?: number }) {
   const yr = year(media.release_date);
   const path = detailPath(media);
+  // Eager-load only the first few cards in the viewport; rest lazy
+  const eager = index < 4;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.35, delay: Math.min(index * 0.02, 0.25) }}
-      className="group relative shrink-0 w-[150px] sm:w-[180px] md:w-[200px]"
-    >
+    <div className="group relative shrink-0 w-[150px] sm:w-[180px] md:w-[200px]">
       <Link
         to={path}
         className="block relative aspect-[2/3] overflow-hidden rounded-xl bg-surface shadow-[var(--shadow-card)]"
@@ -22,7 +17,11 @@ export function MovieCard({ media, index = 0 }: { media: Media; index?: number }
         <img
           src={posterUrl(media.poster_path, "w342")}
           alt={`${media.title} poster`}
-          loading="lazy"
+          loading={eager ? "eager" : "lazy"}
+          decoding="async"
+          fetchPriority={eager ? "high" : "low"}
+          width={342}
+          height={513}
           className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
         <div className="absolute top-2 left-2 right-2 flex items-start justify-between gap-1 z-10">
@@ -44,6 +43,6 @@ export function MovieCard({ media, index = 0 }: { media: Media; index?: number }
           </span>
         </div>
       </Link>
-    </motion.div>
+    </div>
   );
 }
