@@ -33,9 +33,9 @@ export const Route = createFileRoute("/movie/$id")({
   },
   component: MoviePage,
   notFoundComponent: () => <div className="pt-24 text-center text-white/70">Title not found.</div>,
-  errorComponent: ({ error, reset }) => (
+  errorComponent: ({ reset }) => (
     <div className="pt-24 text-center text-white/70">
-      <p>Could not load this title. {error.message}</p>
+      <p>Could not load this title. Please try again.</p>
       <button onClick={reset} className="mt-4 rounded bg-primary px-4 py-2 text-white">Retry</button>
     </div>
   ),
